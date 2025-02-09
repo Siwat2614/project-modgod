@@ -1,6 +1,3 @@
-# project-mongod
- # Auto detect text files and perform LF normalization
-* text=auto
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,11 +32,21 @@
             background-color: #f4f4f4;
         }
 
-        .crad {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            background-color: #f4f4f4;
+        button {
+            padding: 5px 10px;
+            margin: 0 5px;
+        }
+
+        .edit {
+            background-color: #ffc107;
+            border: none;
+            color: white;
+        }
+
+        .delete {
+            background-color: #dc3545;
+            border: none;
+            color: white;
         }
     </style>
 </head>
@@ -48,6 +55,8 @@
     <h1>Task Management</h1>
     <input type="text" id="taskInput" placeholder="Enter task name">
     <button onclick="addTask()">Add Task</button>
+    <button onclick="deleteTask()">Delete Task</button><!-- ปุ้มลบ-->
+    <button onclick="editTask()">Edit Task</button> <!-- ปุ้มแก้ไข -->
     <table>
         <thead>
             <tr>
@@ -69,13 +78,15 @@
             taskList.innerHTML = '';
             tasks.forEach(task => {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-          <td>${task.name}</td>
-          <td>
-            <button onclick="editTask('${task._id}', '${task.name}')">Edit</button>
-            <button onclick="deleteTask('${task._id}')">Delete</button>
-          </td>
-        `;
+                row.innerHTML =
+                    <tr>
+                        <td>${task.name}</td>
+                        <td>
+                            <button class="edit" onclick="editTask('${task._id}', '${task.name}')">Edit</button>
+                            <button class="delete" onclick="deleteTask('${task._id}')">Delete</button>
+                        </td>
+                    </tr>
+                    ;
                 taskList.appendChild(row);
             });
         }
@@ -107,20 +118,7 @@
                 fetchTasks();
             }
         }
-
-        // Delete task
-        async function deleteTask(id) {
-            if (confirm('Are you sure you want to delete this task?')) {
-                await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
-                fetchTasks();
-            }
-        }
-
-        // Initial load
-        fetchTasks();
     </script>
 </body>
-
-
 
 </html>
